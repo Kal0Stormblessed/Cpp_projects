@@ -6,16 +6,11 @@
 #define COLORHEADER_H_
 
 namespace coloring {
-	void test( )
-	{
-		std::cout << "\033[31;107;1;3mHello\033[0m" << std::endl;
-
-	}
 	int frinputHandler (std::string frinputColor)
 	{
 		int number {};
 		
-		//supported colors: Black, Red, Green, Yellow, Blue, Magenta, Cyan, GrayWhite, GrayBlack.
+		//supported colors: Black, Red, Green, Yellow, Blue, Magenta, Cyan, GrayWhite.
 		std::vector<std::string> colorList = { "Black", "Red", "Green", "Yellow", "Blue", "Magenta", "Cyan", "GrayWhite" };
 
 		std::unordered_map<std::string, int> supColors;
@@ -66,16 +61,17 @@ namespace coloring {
 		//std::cout << number << std::endl;
 		return number;
 	}
-	void colorText(std::string text)
+
+	void colorText(std::string text, std::string frinputColor,std::string bginputColor)
 	{
 		int frCases{}, bgCases;
-		std::string frinputColor, bginputColor;
+		/*std::string frinputColor, bginputColor;
 
 		std::cout << "Specify foreground color: ";
 		std::cin >> frinputColor;
 		
 		std::cout << "Specify background color: ";
-		std::cin >> bginputColor;
+		std::cin >> bginputColor;*/
 
 		frCases = frinputHandler(frinputColor);
 		bgCases = bginputHandler(bginputColor);
