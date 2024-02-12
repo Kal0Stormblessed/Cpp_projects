@@ -172,21 +172,21 @@ public:
 
 	bool checkDrawCon()
 	{
-		bool boardIsFull = true; // Assume the board is full initially
-		// Check each cell of the game board
+		bool boardIsFull = true; 
+		
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				// If any cell is empty, the board is not full
+				
 				if (GameBoard[i][j] != 'X' && GameBoard[i][j] != 'O')
 				{
 					boardIsFull = false;
-					break; // Exit inner loop
+					break; 
 				}
 			}
 			if (!boardIsFull)
-				break; // Exit outer loop
+				break; 
 		}
 		return boardIsFull;
 	}
@@ -244,6 +244,5 @@ int main()
 	myBoard.displayBoard(Player, myBoard.computer(Player));
 	myBoard.gameOn(Player, myBoard.computer(Player));
 
-	//coloring::colorText("");
 	return 0;
 }
