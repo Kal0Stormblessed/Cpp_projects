@@ -4,13 +4,7 @@
 #include <random>
 
 //TicTacToe game
-/*
-Main menu
-Select X or O
-DisplayBoard
-RedX, BlueO
-Endscreed(play again, exit)
-*/
+
 class Board
 {
 private:
@@ -42,6 +36,7 @@ public:
 				break;
 			case 3:
 				return '!';
+				playerSym = '!';
 			default:
 				std::cout << "Invalid choice please try again" << std::endl;
 			}
@@ -70,7 +65,6 @@ public:
 
 		for (int i = 0; i < 3; i++)
 		{
-			
 			for (int j = 0; j < 3 ; j++)
 			{
 				std::cout << "|" << GameBoard[i][j];
@@ -78,135 +72,161 @@ public:
 			std::cout << "|" << std::endl;
 		}
 		std::cout << " -+-+- " << std::endl;
-
-		
 	}
 
-	int computerMove(int position, std::vector<int> prevPositions )
+	int computerMove(int position, std::vector<int> prevPositions, char Computer)
 	{
-
 		std::random_device rd;
 		std::mt19937 gen(rd());
-		std::uniform_int_distribution<> dis(1, 3);
-		bool checkPlayerMove{ false };
+		std::uniform_int_distribution<> dis(0, 2); // Adjusted the range
+
 		int comprow, compcol, comPos;
 
-		while (checkPlayerMove == false)
+		bool isValidMove = false;
+		do
 		{
 			comprow = dis(gen);
 			compcol = dis(gen);
 			comPos = comprow * 10 + compcol;
+			isValidMove = (GameBoard[comprow][compcol] == '_'); // Check if the position is empty
+		} while (!isValidMove);
+
+		GameBoard[comprow][compcol] = Computer;
+		return comPos;
+	}
+
+
+
+	void PlayerCheckPosition(int position, char Player, std::vector<int> prevPositions)
+	{
+		bool checkposition = false;
+
+		do
+		{
 			for (int i = 0; i < prevPositions.size(); i++) {
-				if (comPos != prevPositions[i])
+				if (position != prevPositions[i])
 				{
-					checkPlayerMove = true;
+					checkposition = true;
 				}
 				else {
-					break;
+					coloring::colorText("Invalid input, try again: ","GrayWhite","Red");
+					std::cin >> position;
 				}
 			}
-			
+		} while (checkposition == false);
+		
+		GameBoard[(position / 10) - 1][(position % 10) - 1] = Player;
+	}
+
+	char checkWinCon()
+	{
+		char X = 'X';
+		char O = 'O';
+		//check diagonals
+		if ((GameBoard[0][0]==X) && (GameBoard[1][1] == X) && (GameBoard[2][2] == X))
+		{
+			return X;
+		}else 
+		if ((GameBoard[0][0] == O) && (GameBoard[1][1] == O) && (GameBoard[2][2] == O))
+		{
+			return O;
+		}else 
+		if ((GameBoard[0][2] == X) && (GameBoard[1][1] == X) && (GameBoard[2][0] == X))
+		{
+			return X;
+		}else
+		if ((GameBoard[0][2] == O) && (GameBoard[1][1] == O) && (GameBoard[2][0] == O))
+		{
+			return O;
 		}
-		std::cout << comPos;
-			return comPos;
+
+		//check rows
+		if ((GameBoard[0][0] == X) && (GameBoard[0][1] == X) && (GameBoard[0][2] == X) ||
+			(GameBoard[1][0] == X) && (GameBoard[1][1] == X) && (GameBoard[1][2] == X) ||
+			(GameBoard[2][0] == X) && (GameBoard[2][1] == X) && (GameBoard[2][2] == X) )
+		{
+			return X;
+		}
+		if ((GameBoard[0][0] == O) && (GameBoard[0][1] == O) && (GameBoard[0][2] == O) ||
+			(GameBoard[1][0] == O) && (GameBoard[1][1] == O) && (GameBoard[1][2] == O) ||
+			(GameBoard[2][0] == O) && (GameBoard[2][1] == O) && (GameBoard[2][2] == O))
+		{
+			return O;
+		}
+
+		//check columns
+		if ((GameBoard[0][0] == X) && (GameBoard[1][0] == X) && (GameBoard[2][0] == X) ||
+			(GameBoard[0][1] == X) && (GameBoard[1][1] == X) && (GameBoard[2][1] == X) ||
+			(GameBoard[0][2] == X) && (GameBoard[1][2] == X) && (GameBoard[2][2] == X))
+		{
+			return X;
+		}
+		if ((GameBoard[0][0] == O) && (GameBoard[1][0] == O) && (GameBoard[2][0] == O) ||
+			(GameBoard[0][1] == O) && (GameBoard[1][1] == O) && (GameBoard[2][1] == O) ||
+			(GameBoard[0][2] == O) && (GameBoard[1][2] == O) && (GameBoard[2][2] == O))
+		{
+			return O;
+		}
+		return 0;
+	}
+
+	bool checkDrawCon()
+	{
+		bool boardIsFull = true; // Assume the board is full initially
+		// Check each cell of the game board
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				// If any cell is empty, the board is not full
+				if (GameBoard[i][j] != 'X' && GameBoard[i][j] != 'O')
+				{
+					boardIsFull = false;
+					break; // Exit inner loop
+				}
+			}
+			if (!boardIsFull)
+				break; // Exit outer loop
+		}
+		return boardIsFull;
 	}
 
 	void gameOn(char Player, char Computer)
 	{
-		std::vector<int> prevPositions;
+		std::vector<int> prevPositions{0}; 
 		bool gameState = true;
-		int position[2][2];
+		int position{ 0 };
 		while (gameState)
 		{
 			int position;
-			int computerPosition;
+			int compMove;
 			std::cin >> position;
-			switch (position)
+				
+			Board::PlayerCheckPosition(position, Player, prevPositions);
+			Board::displayBoard(Player, Computer);
+			prevPositions.push_back(position);
+			if (checkWinCon() == 'O' || checkWinCon() == 'X')
 			{
-			case 11:
-				GameBoard[(position / 10) - 1][(position % 10) - 1] = Player;
-				Board::displayBoard(Player, Computer);
-				prevPositions.push_back(position);
-				computerPosition = Board::computerMove(position, prevPositions);
-				GameBoard[(computerPosition / 10) - 1][(computerPosition % 10) - 1] = Computer;
-				Board::displayBoard(computerPosition, Computer);
+				std::cout << checkWinCon() << " has Won the game.";
 				break;
-
-			case 12:
-				GameBoard[(position / 10) - 1][(position % 10) - 1] = Player;
-				Board::displayBoard(Player, Computer);
-				prevPositions.push_back(position);
-				computerPosition = Board::computerMove(position, prevPositions);
-				GameBoard[(computerPosition / 10) - 1][(computerPosition % 10) - 1] = Computer;
-				Board::displayBoard(computerPosition, Computer);
+			}
+			else if (checkDrawCon())
+			{
+				std::cout << "The game has ended in a draw";
 				break;
-
-			case 13:
-				GameBoard[(position / 10) - 1][(position % 10) - 1] = Player;
-				Board::displayBoard(Player, Computer);
-				prevPositions.push_back(position);
-				computerPosition = Board::computerMove(position, prevPositions);
-				GameBoard[(computerPosition / 10) - 1][(computerPosition % 10) - 1] = Computer;
-				Board::displayBoard(computerPosition, Computer);
+			}
+			compMove=Board::computerMove(position, prevPositions, Computer);			
+			Board::displayBoard(Player, Computer);
+			prevPositions.push_back(compMove);
+			if (checkWinCon() == 'O' || checkWinCon() == 'X')
+			{
+				std::cout << checkWinCon() << " has Won the game.";
 				break;
-
-			case 21:
-				GameBoard[(position / 10) - 1][(position % 10) - 1] = Player;
-				Board::displayBoard(Player, Computer);
-				prevPositions.push_back(position);
-				computerPosition = Board::computerMove(position, prevPositions);
-				GameBoard[(computerPosition / 10) - 1][(computerPosition % 10) - 1] = Computer;
-				Board::displayBoard(computerPosition, Computer);
+			}
+			else if (checkDrawCon())
+			{
+				std::cout << "The game has ended in a draw";
 				break;
-
-			case 22:
-				GameBoard[(position / 10) - 1][(position % 10) - 1] = Player;
-				Board::displayBoard(Player, Computer);
-				prevPositions.push_back(position);
-				computerPosition = Board::computerMove(position, prevPositions);
-				GameBoard[(computerPosition / 10) - 1][(computerPosition % 10) - 1] = Computer;
-				Board::displayBoard(computerPosition, Computer);
-				break;
-
-			case 23:
-				GameBoard[(position / 10) - 1][(position % 10) - 1] = Player;
-				Board::displayBoard(Player, Computer);
-				prevPositions.push_back(position);
-				computerPosition = Board::computerMove(position, prevPositions);
-				GameBoard[(computerPosition / 10) - 1][(computerPosition % 10) - 1] = Computer;
-				Board::displayBoard(computerPosition, Computer);
-				break;
-
-			case 31:
-				GameBoard[(position / 10) - 1][(position % 10) - 1] = Player;
-				Board::displayBoard(Player, Computer);
-				prevPositions.push_back(position);
-				computerPosition = Board::computerMove(position, prevPositions);
-				GameBoard[(computerPosition / 10) - 1][(computerPosition % 10) - 1] = Computer;
-				Board::displayBoard(computerPosition, Computer);
-				break;
-
-			case 32:
-				GameBoard[(position / 10) - 1][(position % 10) - 1] = Player;
-				Board::displayBoard(Player, Computer);
-				prevPositions.push_back(position);
-				computerPosition = Board::computerMove(position, prevPositions);
-				GameBoard[(computerPosition / 10) - 1][(computerPosition % 10) - 1] = Computer;
-				Board::displayBoard(computerPosition, Computer);
-				break;
-
-			case 33:
-				GameBoard[(position / 10) - 1][(position % 10) - 1] = Player;
-				Board::displayBoard(Player, Computer);
-				prevPositions.push_back(position);
-				computerPosition = Board::computerMove(position, prevPositions);
-				GameBoard[(computerPosition / 10) - 1][(computerPosition % 10) - 1] = Computer;
-				Board::displayBoard(computerPosition, Computer);
-				break;
-			default: 
-				std::cout << "Invalid input, try again: ";
-				break;
-
 			}
 		}
 	}
@@ -216,9 +236,14 @@ int main()
 {
 	Board myBoard;
 	char Player = myBoard.screenMenu();
+	if (Player == '!')
+	{
+		return 1;
+	}
 
 	myBoard.displayBoard(Player, myBoard.computer(Player));
 	myBoard.gameOn(Player, myBoard.computer(Player));
+
 	//coloring::colorText("");
 	return 0;
 }
