@@ -3,7 +3,6 @@
 #include "Vec2.h"
 #include "raylibCpp.h"
 #include "Board.h"
-
 class Tetromino
 {
 public:
@@ -39,9 +38,9 @@ public:
 	}
 private:
 	static constexpr bool shape[] = { 0,0,0,0,
-									  1,1,1,1,
-									  0,0,0,0,
-									  0,0,0,0 };
+									 1,1,1,1,
+									 0,0,0,0,
+									 0,0,0,0 };
 	static constexpr int dimension = 4;
 	static constexpr Color color = SKYBLUE;
 };
@@ -56,8 +55,8 @@ public:
 		static_assert(sizeof(shape) / sizeof(bool) == dimension * dimension);
 	}
 private:
-	static constexpr bool shape[] = { 1, 1,
-									  1, 1 };
+	static constexpr bool shape[] = { 1,1,
+									 1,1 };
 	static constexpr int dimension = 2;
 	static constexpr Color color = YELLOW;
 };
@@ -89,9 +88,9 @@ public:
 		static_assert(sizeof(shape) / sizeof(bool) == dimension * dimension);
 	}
 private:
-	static constexpr bool shape[] = { 1, 0, 0,
-									  1, 1, 1,
-									  0, 0, 0};
+	static constexpr bool shape[] = { 1,0,0,
+									 1,1,1,
+									 0,0,0 };
 	static constexpr int dimension = 3;
 	static constexpr Color color = DARKBLUE;
 };
@@ -106,9 +105,9 @@ public:
 		static_assert(sizeof(shape) / sizeof(bool) == dimension * dimension);
 	}
 private:
-	static constexpr bool shape[] = { 0, 0, 1,
-									  1, 1, 1,
-									  0, 0, 0 };
+	static constexpr bool shape[] = { 0,0,1,
+									 1,1,1,
+									 0,0,0 };
 	static constexpr int dimension = 3;
 	static constexpr Color color = ORANGE;
 };
@@ -123,26 +122,9 @@ public:
 		static_assert(sizeof(shape) / sizeof(bool) == dimension * dimension);
 	}
 private:
-	static constexpr bool shape[] = { 0, 1, 1,
-									  1, 1, 0,
-									  0, 0, 0 };
-	static constexpr int dimension = 3;
-	static constexpr Color color = GREEN;
-};
-
-class SkewS : public Tetromino
-{
-public:
-	SkewS(const Board& board)
-		:
-		Tetromino(shape, dimension, color, board)
-	{
-		static_assert(sizeof(shape) / sizeof(bool) == dimension * dimension);
-	}
-private:
-	static constexpr bool shape[] = { 0, 1, 1,
-									  1, 1, 0,
-									  0, 0, 0 };
+	static constexpr bool shape[] = { 0,1,1,
+									 1,1,0,
+									 0,0,0 };
 	static constexpr int dimension = 3;
 	static constexpr Color color = GREEN;
 };
@@ -157,9 +139,9 @@ public:
 		static_assert(sizeof(shape) / sizeof(bool) == dimension * dimension);
 	}
 private:
-	static constexpr bool shape[] = { 1, 1, 0,
-									  0, 1, 1,
-									  0, 0, 0 };
+	static constexpr bool shape[] = { 1,1,0,
+									 0,1,1,
+									 0,0,0 };
 	static constexpr int dimension = 3;
-	static constexpr Color color = GREEN;
+	static constexpr Color color = RED;
 };

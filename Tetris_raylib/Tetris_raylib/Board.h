@@ -1,8 +1,7 @@
 #pragma once
-#include <raylib.h>
+#include "raylibCpp.h"
 #include <vector>
 #include "Vec2.h"
-
 class Board
 {
 private:
@@ -10,28 +9,30 @@ private:
 	{
 	public:
 		Cell();
-		void SetColor(Color cellColor_in);
+		void SetColor(Color c_in);
 		void Remove();
-
+		bool Exists() const;
 		Color GetColor() const;
 	private:
 		bool bExists;
-		Color cellColor;
+		Color c;
 	};
-
 public:
 
-	Board(int screenX, int screenY, int width, int height, int cellsize, int padding);
-	void SetCell(int x, int y, Color cellColor_in);
-	void DrawCell(int x, int y) const;
+	Board(Vec2<int> screenPos, Vec2<int> widthHeight, int cellsize_in, int padding);
+	void SetCell(Vec2<int> pos, Color c);
+	void DrawCell(Vec2<int> pos) const;
+	void DrawCell(Vec2<int> pos, Color color) const;
+	void DrawBorder() const;
 	void Draw() const;
+	bool CellExists(Vec2<int> pos) const;
+	int GetWidth() const;
+	int GetHeight() const;
 private:
 	std::vector<Cell> cells;
 	const int width;
 	const int height;
-	const int cellsize;
+	const int cellSize;
 	const int padding;
-	int screenX;
-	int screenY;
-
+	Vec2<int> screenPos;
 };

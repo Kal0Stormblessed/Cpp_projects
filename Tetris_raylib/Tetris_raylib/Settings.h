@@ -10,6 +10,6 @@ namespace settings
 	//Board settings
 	inline constexpr int cellSize = 23;
 	inline constexpr int padding = 2;
-	inline constexpr Vec2<int> boardPosition{ 250, 70 };
-	inline constexpr Vec2<int> boardWidthHeight{ 10, 20 };
+	inline constexpr Vec2<int> boardPosition{ 250,70 };
+	inline constexpr Vec2<int> boardWidthHeight{ 10,20 };
 }
