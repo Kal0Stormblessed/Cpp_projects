@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Str2IntATOI.h"
+#include "Palindrome.h"
 
 
 
@@ -7,9 +7,9 @@ int main()
 {
 	Solution solution;
 
-	solution.myAtoi("42");
-	solution.myAtoi("-42");
-	solution.myAtoi("4193 with words");
+	solution.isPalindrome(121);
+	solution.isPalindrome(-121);
+	solution.isPalindrome(10);
 
 	return 0;
 }
