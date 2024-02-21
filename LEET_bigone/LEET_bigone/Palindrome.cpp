@@ -5,8 +5,8 @@ bool Solution::isPalindrome(int x) {
     if (x < 0){ 
         return false;
     }
-    int reversed = 0;
-    int original = x;
+    long long reversed = 0;
+    long long original = x;
     while (x > 0) {
         reversed = reversed * 10 + x % 10;
         x /= 10;

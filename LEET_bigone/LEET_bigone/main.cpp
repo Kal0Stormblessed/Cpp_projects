@@ -1,15 +1,15 @@
 #include <iostream>
-#include "Palindrome.h"
-
-
-
+#include "ContainerWithMostWater.h"
+#include <vector>
 int main()
 {
 	Solution solution;
 
-	solution.isPalindrome(121);
-	solution.isPalindrome(-121);
-	solution.isPalindrome(10);
+	std::vector<int> height1 = { 1, 8, 6, 2, 5, 4, 8, 3, 7 };
+	std::vector<int> height2 = { 1, 1 };
+
+	solution.maxArea(height1);
+	solution.maxArea(height2);
 
 	return 0;
 }
